@@ -1,101 +1,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <meta charset="UTF-8">
-   <title>The Power In Me – 30-Day Gratitude Journal</title>
-   <style>
-       body {
-           font-family: Arial, sans-serif;
-           max-width: 700px;
-           margin: auto;
-           padding: 20px;
-           text-align: center;
-       }
+ <meta charset="UTF-8">
+ <title>The Power In Me – 30-Day Gratitude Journal</title>
+ <style>
+     body {
+         font-family: Arial, sans-serif;
+         max-width: 700px;
+         margin: auto;
+         padding: 20px;
+         text-align: center;
+     }
 
-       #pageContent {
-           border: 1px solid #ddd;
-           padding: 20px;
-           min-height: 400px;
-           margin-bottom: 20px;
-       }
+     #pageContent {
+         border: 1px solid #ddd;
+         padding: 20px;
+         min-height: 400px;
+         margin-bottom: 20px;
+     }
 
-       button {
-           background: #005BBB;
-           color: white;
-           border: none;
-           padding: 12px 20px;
-           font-size: 16px;
-           cursor: pointer;
-           border-radius: 6px;
-           margin: 5px;
-       }
+     button {
+         background: #005BBB;
+         color: white;
+         border: none;
+         padding: 12px 20px;
+         font-size: 16px;
+         cursor: pointer;
+         border-radius: 6px;
+         margin: 5px;
+     }
 
-       button:disabled {
-           background: #cccccc;
-           cursor: default;
-       }
+     button:disabled {
+         background: #cccccc;
+         cursor: default;
+     }
 
-       img.cover {
-           width: 90%;
-           max-width: 500px;
-           margin-top: 20px;
-       }
-   </style>
+     img.cover {
+         width: 90%;
+         max-width: 500px;
+         margin-top: 20px;
+     }
+
+     .download-link {
+         display: inline-block;
+         margin-top: 20px;
+         padding: 12px 20px;
+         background: #005BBB;
+         color: white;
+         border-radius: 6px;
+         text-decoration: none;
+         font-size: 18px;
+     }
+ </style>
 </head>
 
 <body>
 
-   <h1>The Power In Me – Gratitude Journal</h1>
+ <h1>The Power In Me – Gratitude Journal</h1>
 
-   <div id="pageContent">
-       <img src="cover.png" class="cover">
-       <h2>Welcome</h2>
-       <p>Click “Next” to begin Day 1.</p>
-   </div>
+ <div id="pageContent">
+     <img src="cover.png" class="cover">
+     <h2>Welcome</h2>
+     <p>Click “Next” to begin Day 1.</p>
 
-   <div>
-       <button id="prevBtn" onclick="prevPage()" disabled>← Back</button>
-       <button id="nextBtn" onclick="nextPage()">Next →</button>
-   </div>
+     <!-- HERE IS THE PDF DOWNLOAD BUTTON -->
+     <p>
+         <a href="Power-in-Me.pdf" class="download-link" download>
+             Download the Full Gratitude Journal (PDF)
+         </a>
+     </p>
+ </div>
+
+ <div>
+     <button id="prevBtn" onclick="prevPage()" disabled>← Back</button>
+     <button id="nextBtn" onclick="nextPage()">Next →</button>
+ </div>
 
 <script>
-   let currentPage = 0;
-   const totalPages = 30; // You have day1.html through day30.html
+ let currentPage = 0;
+ const totalPages = 30;
 
-   function loadPage(pageNumber) {
-       if (pageNumber === 0) {
-           // Show the cover
-           document.getElementById("pageContent").innerHTML = `
-               <img src="cover.png" class="cover">
-               <h2>Welcome</h2>
-               <p>Click “Next” to begin Day 1.</p>
-           `;
-       } else {
-           fetch(`day${pageNumber}.html`)
-               .then(response => response.text())
-               .then(data => {
-                   document.getElementById("pageContent").innerHTML = data;
-               });
-       }
+ function loadPage(pageNumber) {
+     if (pageNumber === 0) {
+         document.getElementById("pageContent").innerHTML = `
+             <img src="cover.png" class="cover">
+             <h2>Welcome</h2>
+             <p>Click “Next” to begin Day 1.</p>
+             <p>
+                 <a href="Power-in-Me.pdf" class="download-link" download>
+                     Download the Full Gratitude Journal (PDF)
+                 </a>
+             </p>
+         `;
+     } else {
+         fetch(\`day\${pageNumber}.html\`)
+             .then(response => response.text())
+             .then(data => {
+                 document.getElementById("pageContent").innerHTML = data;
+             });
+     }
 
-       // Enable/disable navigation buttons
-       document.getElementById("prevBtn").disabled = pageNumber === 0;
-       document.getElementById("nextBtn").disabled = pageNumber === totalPages;
-   }
+     document.getElementById("prevBtn").disabled = pageNumber === 0;
+     document.getElementById("nextBtn").disabled = pageNumber === totalPages;
+ }
 
-   function nextPage() {
-       if (currentPage < totalPages) {
-           currentPage++;
-           loadPage(currentPage);
-       }
-   }
+ function nextPage() {
+     if (currentPage < totalPages) {
+         currentPage++;
+         loadPage(currentPage);
+     }
+ }
 
-   function prevPage() {
-       if (currentPage > 0) {
-           currentPage--;
-           loadPage(currentPage);
-       }
-   }
+ function prevPage() {
+     if (currentPage > 0) {
+         currentPage--;
+         loadPage(currentPage);
+     }
+ }
 </script>
 
 </body>
