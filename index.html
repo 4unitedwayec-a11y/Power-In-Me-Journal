@@ -52,6 +52,12 @@
          text-decoration: none;
          font-size: 18px;
      }
+
+     .error {
+         color: red;
+         font-weight: bold;
+         margin-top: 20px;
+     }
  </style>
 </head>
 
@@ -64,7 +70,7 @@
    <h2>Welcome</h2>
    <p>Click “Next” to begin Day 1.</p>
 
-   <a href="Power-In-Me.pdf" class="download-link" download>
+   <a href="full_journal.pdf" class="download-link" download>
        Download the Full Gratitude Journal (PDF)
    </a>
 </div>
@@ -85,14 +91,16 @@
              <h2>Welcome</h2>
              <p>Click “Next” to begin Day 1.</p>
 
-             <a href="Power-In-Me.pdf" class="download-link" download>
+             <a href="full_journal.pdf" class="download-link" download>
                  Download the Full Gratitude Journal (PDF)
              </a>
          `;
      } else {
-         fetch(\`day\${pageNumber}.html\`)
+         fetch(\`day${pageNumber}.html\`)
              .then(response => {
-                 if (!response.ok) throw new Error("Missing Day Page");
+                 if (!response.ok) {
+                     throw new Error("Missing page file");
+                 }
                  return response.text();
              })
              .then(data => {
@@ -100,7 +108,7 @@
              })
              .catch(() => {
                  document.getElementById("pageContent").innerHTML =
-                     "<p class='error'>Day " + pageNumber + " page is missing.</p>";
+                     "<p class='error'>Page not found. Make sure day" + pageNumber + ".html exists.</p>";
              });
      }
 
