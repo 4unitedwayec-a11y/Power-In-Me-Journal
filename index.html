@@ -1,58 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>The Power In Me – 30-Day Gratitude Journal</title>
+   <meta charset="UTF-8">
+   <title>The Power In Me – 30-Day Gratitude Journal</title>
 
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          max-width: 700px;
-          margin: auto;
-          padding: 20px;
-          text-align: center;
-      }
+   <style>
+       body {
+           font-family: Arial, sans-serif;
+           max-width: 700px;
+           margin: auto;
+           padding: 20px;
+           text-align: center;
+       }
 
-      #pageContent {
-          border: 1px solid #ddd;
-          padding: 20px;
-          min-height: 400px;
-          margin-bottom: 20px;
-      }
+       #pageContent {
+           border: 1px solid #ddd;
+           padding: 20px;
+           min-height: 400px;
+           margin-bottom: 20px;
+       }
 
-      button {
-          background: #005BBB;
-          color: white;
-          border: none;
-          padding: 12px 20px;
-          font-size: 16px;
-          cursor: pointer;
-          border-radius: 6px;
-          margin: 5px;
-      }
+       button {
+           background: #005BBB;
+           color: white;
+           border: none;
+           padding: 12px 20px;
+           font-size: 16px;
+           cursor: pointer;
+           border-radius: 6px;
+           margin: 5px;
+       }
 
-      button:disabled {
-          background: #cccccc;
-          cursor: default;
-      }
+       button:disabled {
+           background: #cccccc;
+           cursor: default;
+       }
 
-      img.cover {
-          width: 90%;
-          max-width: 500px;
-          margin-top: 20px;
-      }
+       img.cover {
+           width: 90%;
+           max-width: 500px;
+           margin-top: 20px;
+       }
 
-      .download-link {
-          display: inline-block;
-          margin-top: 20px;
-          padding: 12px 20px;
-          background: #005BBB;
-          color: white;
-          border-radius: 6px;
-          text-decoration: none;
-          font-size: 18px;
-      }
-  </style>
+       .download-link {
+           display: inline-block;
+           margin-top: 20px;
+           padding: 12px 20px;
+           background: #005BBB;
+           color: white;
+           border-radius: 6px;
+           text-decoration: none;
+           font-size: 18px;
+       }
+
+       .error {
+           color: red;
+           font-weight: bold;
+           margin-top: 20px;
+       }
+   </style>
 </head>
 
 <body>
@@ -60,60 +66,72 @@
 <h1>The Power In Me – Gratitude Journal</h1>
 
 <div id="pageContent">
-    <img src="cover.png" class="cover">
-    <h2>Welcome</h2>
-    <p>Click “Next” to begin Day 1.</p>
+   <img src="cover.png" class="cover">
+   <h2>Welcome</h2>
+   <p>Click “Next” to begin Day 1.</p>
 
-    <a href="Power-in-Me.pdf" class="download-link" download>
-        Download the Full Gratitude Journal (PDF)
-    </a>
+   <a href="Power-in-Me.pdf" class="download-link" download>
+       Download the Full Gratitude Journal (PDF)
+   </a>
 </div>
 
 <div>
-    <button id="prevBtn" onclick="prevPage()" disabled>← Back</button>
-    <button id="nextBtn" onclick="nextPage()">Next →</button>
+   <button id="prevBtn" onclick="prevPage()" disabled>← Back</button>
+   <button id="nextBtn" onclick="nextPage()">Next →</button>
 </div>
 
 <script>
-  let currentPage = 0;
-  const totalPages = 30;
+   let currentPage = 0;
+   const totalPages = 30;
 
-  function loadPage(pageNumber) {
-      if (pageNumber === 0) {
-          document.getElementById("pageContent").innerHTML = `
-              <img src="cover.png" class="cover">
-              <h2>Welcome</h2>
-              <p>Click “Next” to begin Day 1.</p>
+   function loadPage(pageNumber) {
+       if (pageNumber === 0) {
+           document.getElementById("pageContent").innerHTML = `
+               <img src="cover.png" class="cover">
+               <h2>Welcome</h2>
+               <p>Click “Next” to begin Day 1.</p>
 
-              <a href="Power-in-Me.pdf" class="download-link" download>
-                  Download the Full Gratitude Journal (PDF)
-              </a>
-          `;
-      } else {
-          fetch(\`day\${pageNumber}.html\`)
-              .then(response => response.text())
-              .then(data => {
-                  document.getElementById("pageContent").innerHTML = data;
-              });
-      }
+               <a href="Power-in-Me.pdf" class="download-link" download>
+                   Download the Full Gratitude Journal (PDF)
+               </a>
+           `;
+       } else {
+           fetch(`day${pageNumber}.html`)
+               .then(response => {
+                   if (!response.ok) {
+                       throw new Error("Page not found");
+                   }
+                   return response.text();
+               })
+               .then(data => {
+                   document.getElementById("pageContent").innerHTML = data;
+               })
+               .catch(error => {
+                   document.getElementById("pageContent").innerHTML = `
+                       <h2>Day ${pageNumber}</h2>
+                       <p class="error">⚠️ Error: day${pageNumber}.html is missing.</p>
+                       <p>Please create this file in GitHub.</p>
+                   `;
+               });
+       }
 
-      document.getElementById("prevBtn").disabled = pageNumber === 0;
-      document.getElementById("nextBtn").disabled = pageNumber === totalPages;
-  }
+       document.getElementById("prevBtn").disabled = pageNumber === 0;
+       document.getElementById("nextBtn").disabled = pageNumber === totalPages;
+   }
 
-  function nextPage() {
-      if (currentPage < totalPages) {
-          currentPage++;
-          loadPage(currentPage);
-      }
-  }
+   function nextPage() {
+       if (currentPage < totalPages) {
+           currentPage++;
+           loadPage(currentPage);
+       }
+   }
 
-  function prevPage() {
-      if (currentPage > 0) {
-          currentPage--;
-          loadPage(currentPage);
-      }
-  }
+   function prevPage() {
+       if (currentPage > 0) {
+           currentPage--;
+           loadPage(currentPage);
+       }
+   }
 </script>
 
 </body>
