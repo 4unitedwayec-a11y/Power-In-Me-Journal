@@ -52,12 +52,6 @@
          text-decoration: none;
          font-size: 18px;
      }
-
-     .error {
-         color: red;
-         font-weight: bold;
-         margin-top: 20px;
-     }
  </style>
 </head>
 
@@ -96,10 +90,10 @@
              </a>
          `;
      } else {
-         fetch(\`day${pageNumber}.html\`)
+         fetch(\`day\${pageNumber}.html\`)
              .then(response => {
                  if (!response.ok) {
-                     throw new Error("Missing page file");
+                     throw new Error("Page not found");
                  }
                  return response.text();
              })
@@ -108,7 +102,7 @@
              })
              .catch(() => {
                  document.getElementById("pageContent").innerHTML =
-                     "<p class='error'>Page not found. Make sure day" + pageNumber + ".html exists.</p>";
+                     `<p style="color:red; font-weight:bold;">Day ${pageNumber} is missing.</p>`;
              });
      }
 
@@ -133,3 +127,4 @@
 
 </body>
 </html>
+
